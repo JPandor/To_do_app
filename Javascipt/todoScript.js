@@ -13,19 +13,33 @@ class Task {
 
 };
 
-function writeToDisplay(){
+let todoList = [];
+
+function createTodo (){
     // getting input fields
     let taskName = document.getElementById("task").value;
     let taskDescription = document.getElementById("description").value;
     let taskEndDate = document.getElementById("due_date").value;
     let taskEndTime = document.getElementById("due_time").value;
+
+    // instantiating new object 
+    let newTask = new Task (taskName, taskDescription, taskEndDate, taskEndTime, false, Date.now());
+    todoList.push(newTask);
+
+    addToLocalStorage(todoList);
+    console.log(todoList)
     
+};
+
+
+function writeToDisplay(){
+
     // creating a container div for each task 
     let newDiv = document.createElement("div");
 
     //creating a new list item and setting it to the task title
     let newList = document.createElement("li");
-    let listInside = document.createTextNode(taskName);
+    let listInside = document.createTextNode();
     newList.appendChild(listInside);
 
     // creating the check button 
@@ -51,6 +65,10 @@ function writeToDisplay(){
 
 }
 
+function addToLocalStorage(){
+    let jd = JSON.stringify(todoList);
+    localStorage.setItem("tasks", jd);
+}
 
 
 
