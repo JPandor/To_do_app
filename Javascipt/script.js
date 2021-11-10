@@ -25,7 +25,6 @@ function addTodo() {
     writeToDisplay(newTask);
 
     addLocalStorage(newTask, newTask.id); // running the local storage function
-    sortArr.push(newTask);
 
 }
 
