@@ -41,7 +41,7 @@ function writeToDisplay() {
     // creating elements and buttons for each object in the array
     taskArray.forEach((e) => {
         // getting a unique id for the collapsible
-        let collId = "a" + e.hideId
+        let collId = "a" + e.hideId;
 
         //creating a container div for each list element
         const newDiv = document.createElement("div");
@@ -50,27 +50,27 @@ function writeToDisplay() {
         //creating a new list item and setting it to the task title and setting all the attributes
         const newList = document.createElement("li");
         const listInside = document.createTextNode(e.title);
-        newList.setAttribute("class", "listItem")
+        newList.setAttribute("class", "listItem");
         newList.appendChild(listInside);
 
         // creating the collapsible button and setting all the attributes 
         const collapsible = document.createElement("button");
-        collapsible.insertAdjacentHTML('beforeend', '<i class="fas fa-arrow-down"></i>')
+        collapsible.insertAdjacentHTML('beforeend', '<i class="fas fa-arrow-down"></i>');
         collapsible.setAttribute("class", "collapsible");
         collapsible.setAttribute("data-bs-toggle", "collapse");
         collapsible.setAttribute("data-bs-target", `#${collId}` );
 
         // creating the check button and setting all the attributes 
         const checkBtn = document.createElement("button");
-        checkBtn.insertAdjacentHTML('beforeend', '<i class="fas fa-check-square"></i>')
+        checkBtn.insertAdjacentHTML('beforeend', '<i class="fas fa-check-square"></i>');
         checkBtn.setAttribute("class", "chckBtn");
-        checkBtn.setAttribute("onclick", "checked(this.parentNode.id, this.parentNode)")
+        checkBtn.setAttribute("onclick", "checked(this.parentNode.id, this.parentNode)");
 
         //creating the edit button and setting all the attributes
         const editBtn = document.createElement("button");
-        editBtn.insertAdjacentHTML('beforeend', '<i class="fas fa-edit"></i>')
-        editBtn.setAttribute("class", "editBtn")
-        editBtn.setAttribute("onclick", "editTitle(this.parentNode, this.parentNode.id)")
+        editBtn.insertAdjacentHTML('beforeend', '<i class="fas fa-edit"></i>');
+        editBtn.setAttribute("class", "editBtn");
+        editBtn.setAttribute("onclick", "editTitle(this.parentNode, this.parentNode.id)");
 
         //creating the delete button and setting all the attributes
         const delBtn = document.createElement("button");
@@ -87,7 +87,7 @@ function writeToDisplay() {
 
 
         // appending all new elements 
-        document.getElementById("task-list").appendChild(newDiv)
+        document.getElementById("task-list").appendChild(newDiv);
         newDiv.appendChild(newList);
         newDiv.appendChild(checkBtn);
         newDiv.appendChild(editBtn);
@@ -104,7 +104,7 @@ function addLocalStorage(taskObj, ObjId) {
 
     //Sending object to local storage 
     localStorage.setItem(ObjId, jd);
-}
+};
 
 
 
@@ -116,7 +116,7 @@ function removeParent(parent, taskId) {
     //remove the task from the array if the items id matches
     taskArray = taskArray.filter(function (item) {
         return item.id != taskId;
-    })
+    });
 };
 
 function editTitle(parent, parentId) {
@@ -132,7 +132,7 @@ function editTitle(parent, parentId) {
 
     // create description input
     let descriptionInput = document.createElement("input");
-    descriptionInput.setAttribute("type", "text")
+    descriptionInput.setAttribute("type", "text");
     descriptionInput.value = previousData.description;
     parent.appendChild(descriptionInput);
 
@@ -160,7 +160,7 @@ function editTitle(parent, parentId) {
         //instantiate a new task with the updated value
         let newTask = new Task(titleInput.value, descriptionInput.value, dateInput.value, timeInput.value, false, Date.now());
         taskArray.push(newTask);
-        sortTask()
+        sortTask();
         addLocalStorage(newTask, newTask.id);
 
     }
@@ -186,7 +186,7 @@ document.querySelector("body").onload = () => {
     let localArr = [];
     for (let key in localStorage) {
         localArr.push(key);
-    }
+    };
     //remove the local storage methods that return 
     localArr.splice(-6, 6);
 
@@ -196,9 +196,9 @@ document.querySelector("body").onload = () => {
         let parseData = JSON.parse(jd);
         taskArray.push(parseData);
         sortTask();
-    }
+    };
 
-}
+};
 
 
 function sortTask() {
