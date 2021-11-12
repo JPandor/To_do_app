@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap');
+
+body {
+    font-family: 'Mochiy Pop P One', sans-serif;
+    background: linear-gradient(to right, #DCBCC0, #B1A4F4);
+    font-size: large;
+}
+
+.container {
+    text-align: center;
+}
+
+#create-button {
+    background-color: #4B5358;
+    color: white;
+    font-size: large;
+    width: 35vw;
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    padding: 10px;
+}
+
+button:hover {
+    background-color: black;
+    color: white;
+    transition: 0.5s ease-in;
+}
+
+input[type=text], [type=date], [type=time] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+@media screen and (min-width: 481px) {
+    .listItem, .checkBtn, .editBtn, .dltBtn, .collapsible {
+        display: inline;
+    }
+}
+
+@media screen and (max-width: 480px) {
+
+    #create-button {
+        width: 90%;
+    }
+
+}
+
+@media screen and (max-width: 270px) {
+    body {
+        font-size: small;
+    }
+
+    #create-button {
+        font-size: small;
+    }
+    
+}
