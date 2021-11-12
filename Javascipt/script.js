@@ -1,15 +1,15 @@
 class Task {
-    constructor(title, description, due_date, due_time, completed, id) {
+    constructor(title, description, due_date, due_time, completed, id, hideId) {
         this.title = title;
         this.description = description;
         this.due_date = due_date;
         this.due_time = due_time;
         this.completed = completed;
         this.id = id;
+        this.hideId = hideId;
     };
 
 };
-
 
 let taskArray = [];
 function addTodo() {
@@ -20,66 +20,83 @@ function addTodo() {
     let taskEndTime = document.getElementById("due_time").value;
 
     //Instantiate a new class
-    let newTask = new Task(taskName, taskDescription, taskEndDate, taskEndTime, false, Date.now());
+    let newTask = new Task(taskName, taskDescription, taskEndDate, taskEndTime, false, Date.now(), Date.now() + 10);
 
     // adding task to array and then sorting alphabetically
     taskArray.push(newTask);
     sortTask();
-
+    
     // adding task to local storage
     addLocalStorage(newTask, newTask.id);
+    
+    document.getElementById("form").reset();
+};
 
-}
 
 function writeToDisplay() {
     //empty out the ul 
-    document.getElementById("taskList").innerHTML = "";
+    document.getElementById("task-list").innerHTML = "";
 
+    
     // creating elements and buttons for each object in the array
     taskArray.forEach((e) => {
-        let newDiv = document.createElement("div");
-        newDiv.setAttribute("class", "task-title-style");
+        // getting a unique id for the collapsible
+        let collId = "a" + e.hideId
+
+        //creating a container div for each list element
+        const newDiv = document.createElement("div");
         newDiv.setAttribute("id", e.id);
 
         //creating a new list item and setting it to the task title and setting all the attributes
-        let newList = document.createElement("li");
-        let listInside = document.createTextNode(e.title);
+        const newList = document.createElement("li");
+        const listInside = document.createTextNode(e.title);
         newList.setAttribute("class", "listItem")
         newList.appendChild(listInside);
 
+        // creating the collapsible button and setting all the attributes 
+        const collapsible = document.createElement("button");
+        collapsible.insertAdjacentHTML('beforeend', '<i class="fas fa-arrow-down"></i>')
+        collapsible.setAttribute("class", "collapsible");
+        collapsible.setAttribute("data-bs-toggle", "collapse");
+        collapsible.setAttribute("data-bs-target", `#${collId}` );
+
         // creating the check button and setting all the attributes 
-        let checkBtn = document.createElement("button");
-        checkBtn.innerHTML = "Complete";
+        const checkBtn = document.createElement("button");
+        checkBtn.insertAdjacentHTML('beforeend', '<i class="fas fa-check-square"></i>')
         checkBtn.setAttribute("class", "chckBtn");
-        checkBtn.setAttribute("onclick", "checked(this.parentNode.id)")
+        checkBtn.setAttribute("onclick", "checked(this.parentNode.id, this.parentNode)")
 
         //creating the edit button and setting all the attributes
-        let editBtn = document.createElement("button");
-        editBtn.innerHTML = "Edit";
+        const editBtn = document.createElement("button");
+        editBtn.insertAdjacentHTML('beforeend', '<i class="fas fa-edit"></i>')
         editBtn.setAttribute("class", "editBtn")
         editBtn.setAttribute("onclick", "editTitle(this.parentNode, this.parentNode.id)")
 
         //creating the delete button and setting all the attributes
-        let delBtn = document.createElement("button");
-        delBtn.innerHTML = "Delete";
+        const delBtn = document.createElement("button");
+        delBtn.insertAdjacentHTML('beforeend', '<i class="fas fa-trash-alt"></i>');
         delBtn.setAttribute("class", "delBtn");
         delBtn.setAttribute("onclick", "removeParent(this.parentNode, this.parentNode.id)");
 
         //creating hidden div with details of task and setting the attributes
-        let hideDiv = document.createElement("div");
-        hideDiv.innerHTML = `Description ${e.description} <br> Due Date ${e.due_date} <br> Due Time ${e.due_time}`;
+        const hideDiv = document.createElement("div");
+        hideDiv.setAttribute("class", "hideDiv");
+        hideDiv.setAttribute("class", "collapse");
+        hideDiv.setAttribute("id", collId);
+        hideDiv.innerHTML = `Description: ${e.description} <br> Due Date: ${e.due_date} <br> Due Time: ${e.due_time}`;
 
 
         // appending all new elements 
-        document.getElementById("taskList").appendChild(newDiv)
+        document.getElementById("task-list").appendChild(newDiv)
         newDiv.appendChild(newList);
-        newDiv.appendChild(editBtn);
         newDiv.appendChild(checkBtn);
+        newDiv.appendChild(editBtn);
         newDiv.appendChild(delBtn);
+        newDiv.appendChild(collapsible);
         newDiv.appendChild(hideDiv);
     });
 
-}
+};
 
 function addLocalStorage(taskObj, ObjId) {
     // convert to JSON
@@ -115,7 +132,7 @@ function editTitle(parent, parentId) {
 
     // create description input
     let descriptionInput = document.createElement("input");
-    descriptionInput.setAttribute("type", "text");
+    descriptionInput.setAttribute("type", "text")
     descriptionInput.value = previousData.description;
     parent.appendChild(descriptionInput);
 
@@ -150,13 +167,15 @@ function editTitle(parent, parentId) {
 
 };
 
-function checked(taskId) {
+function checked(taskId, parent) {
     //get the task from local storage
     let taskObj = localStorage.getItem(taskId);
     taskObj = JSON.parse(taskObj);
 
     //change the value to true 
     taskObj.completed = true;
+
+    parent.style.textDecoration = "line-through";
 
     addLocalStorage(taskObj, taskId);
 };
@@ -199,3 +218,4 @@ function sortTask() {
 
     writeToDisplay();
 };
+
